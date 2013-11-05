@@ -1,0 +1,87 @@
+{% extends "fullpage.html" %}
+{% block custom_styles %}
+	{% if request.form.get("language", "english") != "english" %} 
+	<style>
+		.foreign-lang{
+			display: block;
+		}
+		.english-lang{
+			display: none;
+		}
+	</style>
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+<form role="form" method="post">
+	{% if request.args.get("success") %}
+	<div class="alert alert-success alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		{{request.args.get("success")}}
+	</div>
+	{% endif %}
+	{% if error %}
+	<div class="alert alert-danger alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		{{error}}
+		{% if errors %}
+		<ul>
+			{% for field, message in errors.iteritems() %}
+				<li><strong>{{field|capitalize}}:</strong> {{message}}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	</div>
+	{% endif %}
+	<fieldset>
+		<legend><strong>{{_("Submit a new slang")}}</strong></legend>
+		<div class="form-group">
+			<label for="language">{{_("This slang is in")}}</label>
+			<select name="language" class="form-control" id="language">
+				<option {% if request.form.get("language") == "english" %} selected {% endif %} value="english">English</option>
+				<option {% if request.form.get("language") == "arabic" %} selected {% endif %} value="arabic">Arabic</option>
+				<option {% if request.form.get("language") == "urdu" %} selected {% endif %} value="urdu">Urdu</option>
+			</select>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="form-group foreign-lang {% if errors and errors["local"] %}has-error{% endif %}">
+					{% autoescape off %}
+					<label for="local">{{_("It's written in %(language)s as", language='<span id="lang_text">' + request.form.get("language","Japanese") + '</span>')}}</label>
+					{% endautoescape %}
+					<input type="text" class="form-control" id="local" name="local" value="{{request.form["local"]}}">
+					<p class="help-block foreign-lang">ファック ({{_("Fuck in Japanese")}})</p>
+				</div>
+			</div>
+		</div>
+		<div class="form-group {% if errors and errors["phrase"] %}has-error{% endif %}">
+			{% autoescape off %}
+			<label class="foreign-lang" for="phrase">{{_("Pronunciation of %(word)s in English can be best written as", word='<span class="eng_pron">ファック</span>')}}</label>
+			<label class="english-lang" for="phrase">{{_("Word")}}</label>
+			{% endautoescape %}
+			<input value="{{request.form["phrase"]}}" type="text" class="form-control" name="phrase" id="phrase">
+			<p class="help-block foreign-lang">{{_("Fakku (Pronunciation of ファック)")}}</p>
+		</div>
+		<div class="form-group {% if errors and errors["definition"] %}has-error{% endif %}">
+			<label for="definition">{{_("Definition")}}</label>
+			<textarea class="form-control" name="definition" id="definition" rows="5">{{request.form["definition"]}}</textarea>
+		</div>
+
+		<div class="form-group {% if errors and errors["tags"] %}has-error{% endif %}">
+			<label for="tags">{{_("Similar slangs:")}}</label>
+			<input type="text" class="form-control" name="tags" id="tags" value="{{request.form["tags"]}}">
+			<p class="help-block">{{_("Commma separated list of similar slangs")}}</p>
+		</div>
+		<div class="form-group {% if errors and errors["example"] %}has-error{% endif %}">
+			<label for="example">{{_("Example(s):")}}</label>
+			<textarea rows="5" class="form-control" name="example" value="{{request.form["example"]}}" id="example"></textarea>
+			<p class="help-block foreign-lang">{{_("男はねえ、あなたをファック (Hey man, Fuck you)")}}</p>
+		</div>
+		<hr/>
+		<p class="help-block">{{_("We recommend that you register after submission so you can take credit for your submission. Your submission will be reviewed before acceptance. You will be notified by email if you are registered.")}}</p>
+		<div class="form-group">
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</div>
+	</fieldset>
+</form>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+	{% for word in words %}
+	<div class="col-md-6">
+		<div class="panel panel-primary">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">
+		    	<a href="#">{{word["phrase"]}} {%if word["local"] %}({{word["local"]}}) {% endif %} </a>
+			    <span class="vote">
+			    	<a href="#"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+			    	&nbsp;{{word["likes_count"]}}&nbsp;
+			    	<a href="#"><span class="glyphicon glyphicon-thumbs-down"></span></a>
+			    	&nbsp;{{word["dislikes_count"]}}
+			    </span>
+		    </h3>
+		  </div>
+		  <div class="panel-body">
+		    <dl>
+			  <dt>{{_("Definition")}}</dt>
+			  <dd>{{word["definition"]}}</dd>
+			</dl>
+			<dl>
+			  <dt>{{_("Examples")}}</dt>
+			  <dd><em>{{word["example"]}}</em></dd>
+			</dl>
+			<a href="#">{{_("More examples and defintions...")}}</a>
+		  </div>
+		</div>
+	</div>
+	{% endfor %}
+	{% if not words or words.count() == 0 %}
+	<div class="col-lg-12 clear">
+		<div class="jumbotron">
+		  <h1>{{_("Hey, there!")}}</h1>
+		  <p>{{_("Nobody has defined a word in this category yet. Become the first one to define a slang starting with \"%(alphabet)s\".", alphabet=url_args(request.path)["alphabet"].upper())}}</p>
+		  <p><a class="btn btn-primary btn-lg" role="button" href="{{url_for("bp_word.add_word")}}">{{_("Define Now")}}</a></p>
+		</div>
+	</div>
+	{% endif %}
+</div>
+{% endblock %}

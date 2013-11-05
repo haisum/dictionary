@@ -1,0 +1,117 @@
+/*
+ * Main navigation
+ *
+ * Turn the `.navbar` at the top of the docs purple.
+ */
+
+.bs-docs-nav {
+  text-shadow: 0 -1px 0 rgba(0,0,0,.15);
+  background-color: #E0522F;
+  border-color: #C44121;
+  box-shadow: 0 1px 0 rgba(255,255,255,.1);
+}
+.bs-docs-nav .navbar-collapse {
+  border-color: #C44121;
+}
+.bs-docs-nav .navbar-brand {
+  color: #fff;
+}
+.bs-docs-nav .navbar-nav > li > a {
+  color: #fff;
+}
+.bs-docs-nav .navbar-nav > li > a:hover {
+  color: #fff;
+}
+.bs-docs-nav .navbar-nav > .active > a,
+.bs-docs-nav .navbar-nav > .active > a:hover {
+  color: #fff;
+  background-color: #C44121;
+}
+.bs-docs-nav .navbar-toggle {
+  border-color: #E0522F;
+}
+.bs-docs-nav .navbar-toggle:hover {
+  background-color: #C44121;
+  border-color: #C44121;
+}
+.bs-docs-nav .navbar-nav>.active>a, .bs-docs-nav .navbar-nav>.active>a:hover, .bs-docs-nav .navbar-nav>.active>a:focus {
+  color: #ffffff;
+  background-color: #C44121;
+}
+.bs-docs-nav .navbar-nav>.open>a, .bs-docs-nav .navbar-nav>.open>a:hover, .bs-docs-nav .navbar-nav>.open>a:focus {
+  background-color: #EC4B24;
+  color: #ffffff;
+}
+.bs-docs-nav .navbar-nav>li>a {
+  color: #fff;
+}
+.navbar-inverse .navbar-nav>.dropdown>a .caret {
+  border-top-color: #fff;
+  border-bottom-color: #fff;
+}
+
+/*
+* Adding custom button classes
+*/
+.btn-orange {
+  color: #fff;
+  background-color: #E0522F;
+  border-color: #C44121;
+}
+.btn-orange:hover{
+  color: #fff;
+}
+
+/**
+* Override default control focus outline
+*/
+.form-control:focus {
+  border-color: #F78C45;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(228, 151, 36, 0.6);
+  box-shadow: inset 0 1px 1px rgba(211, 115, 40, 0.075), 0 0 8px rgba(240, 132, 47, 0.6);
+}
+/**
+ * Styles for side menu
+ */
+.nav-side {
+  font-size: 11px;
+}
+.nav-side .list-group-item{
+  padding: 5px 5px;
+}
+.nav-side .list-group-item:hover{ 
+  background-color: #e0522f;
+  color: #fff;
+}
+/**
+ * Voting (likes and dislikes)
+ */
+.vote{
+  float: right;
+  font-size: 12px;
+}
+.vote a{
+  color: #fff;
+}
+.vote .glyphicon{
+  font-weight: bold;
+}
+/**
+ * Alphabetical navigation
+ */
+.nav-alpha{
+  margin-bottom: 10px;
+}
+.nav-alpha li a{
+  padding: 10px 4px;
+}
+.nav-alpha li.small a{
+  padding: 10px 8px;
+}
+.nav-alpha li.new a{
+  padding: 10px 10px;
+}
+.foreign-lang{
+  display: none;
+}
