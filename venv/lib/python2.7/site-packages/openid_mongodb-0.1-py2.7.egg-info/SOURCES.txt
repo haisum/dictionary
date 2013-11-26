@@ -1,0 +1,9 @@
+setup.cfg
+setup.py
+openid_mongodb.egg-info/PKG-INFO
+openid_mongodb.egg-info/SOURCES.txt
+openid_mongodb.egg-info/dependency_links.txt
+openid_mongodb.egg-info/not-zip-safe
+openid_mongodb.egg-info/requires.txt
+openid_mongodb.egg-info/top_level.txt
+openidmongodb/__init__.py
