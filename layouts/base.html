@@ -38,29 +38,35 @@
 						<ul class="nav navbar-nav">
 							<li {% if reverse_url_map(request.path) == "bp_word.home" %} class="active" {% endif %}><a href="{{ url_for("bp_word.home") }}">{{_("Home")}}</a></li>
 							<li {% if reverse_url_map(request.path) == "bp_word.show_add_form" %} class="active" {% endif %}><a href="{{ url_for("bp_word.show_add_form") }}">Add Slang</a></li>
-							<li {% if reverse_url_map(request.path) == "bp_user.login" %} class="active" {% endif %}><a href="{{ url_for("bp_user.login") }}">{{_("Login")}}</a></li>
 						</ul>
-					    <ul class="nav navbar-nav navbar-right">
-					      <li class="dropdown">
-					        <a href="#" class="dropdown-toggle" data-toggle="dropdown">English<b class="caret"></b></a>
-					        <ul class="dropdown-menu">
-					          <li><a href="#">Action</a></li>
-					          <li><a href="#">Another action</a></li>
-					          <li><a href="#">Something else here</a></li>
-					          <li><a href="#">Separated link</a></li>
-					        </ul>
-					      </li>
-					    </ul>
+						
+						<ul class="nav navbar-nav navbar-right">
+						{% if "userid"  not in session %} 
+							<li {% if reverse_url_map(request.path) == "bp_user.login" %} class="active" {% endif %}><a href="{{ url_for("bp_user.login") }}">{{_("Login")}}</a></li>
+						{% endif %}
+						{% if "userid" in session %}
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{g.user["fullname"].split(" ")[0]}}<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="#">Profile</a></li>
+									<li><a href="#">Favorites</a></li>
+									<li><a href="#">Activity</a></li>
+									<li><a href="{{ url_for("bp_user.logout") }}">Logout</a></li>
+								</ul>
+							</li>
+						{% endif %}
+						</ul>
 						<form class="navbar-form navbar-right" role="search">
-					      <div class="form-group">
-					        <input type="text" class="form-control" placeholder="Search">
-					      </div>
-					      <button type="submit" class="btn btn-default">Submit</button>
-					    </form>
+						  <div class="form-group">
+							<input type="text" class="form-control" placeholder="Search">
+						  </div>
+						  <button type="submit" class="btn btn-default">Submit</button>
+						</form>
 					</div><!-- /.navbar-collapse -->
 				</div><!-- /.container -->
 			</nav>
 			<div class="row">
+				{% block side_menu %}
 				<nav>
 					<div class="col-lg-2">
 						<div class="list-group nav-side">
@@ -73,29 +79,32 @@
 						</div>
 					</div>
 				</nav>
-				<div class="col-lg-10">
+				{% endblock %}
+				<div class="{% block content_container_class %}col-lg-10{% endblock %}">
+					{% block sub_menu %}
 					<nav>
 						<div class="row">
 							<div class="col-lg-12">
 								<ul class="nav nav-tabs nav-alpha">
 								  <li class="{% if reverse_url_map(request.path) == "bp_word.home" %} active {% endif %}">
-								  	<a href="{{url_for("bp_word.home")}}">Popular</a>
+									<a href="{{url_for("bp_word.home")}}">Popular</a>
 								  </li>
 								  <li class="{% if reverse_url_map(request.path) == "bp_word.random_words" %} active {% endif %}">
-								  	<a href="{{url_for("bp_word.random_words")}}">Random</a>
+									<a href="{{url_for("bp_word.random_words")}}">Random</a>
 								  </li>
 								  <li class="new  {% if reverse_url_map(request.path) == "bp_word.new_words" %} active {% endif %}">
-								  	<a href="{{url_for("bp_word.new_words")}}">New</a>
+									<a href="{{url_for("bp_word.new_words")}}">New</a>
 								  </li>
 								  {% for x in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'] %}
 								  <li class="small {% if reverse_url_map(request.path) == "bp_word.alpha" and url_args(request.path)["alphabet"].upper() == x  %} active {% endif %}">
-								  	<a href="{{url_for("bp_word.alpha", alphabet=x.lower())}}">{{ x }}</a>
+									<a href="{{url_for("bp_word.alpha", alphabet=x.lower())}}">{{ x }}</a>
 								  </li>
 								  {% endfor %}
 								</ul>
 							</div>
 						</div>
 					</nav>
+					{% endblock %}
 					<article>
 						{% block content %}
 							<h1>{{_("Nothing to see here.")}}</h1>
@@ -111,13 +120,13 @@
 						<hr>
 						<ul class="list-inline">
 						  <li>
-						  	<a href="#">Terms and Conditions</a>
+							<a href="#">Terms and Conditions</a>
 						  </li>
 						  <li>
-						  	<a href="#">Privacy Policy</a>
+							<a href="#">Privacy Policy</a>
 						  </li>
 						  <li>
-						  	<a href="#">Feedback</a>
+							<a href="#">Feedback</a>
 						  </li>
 						</ul>
 					</div>

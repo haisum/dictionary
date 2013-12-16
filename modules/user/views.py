@@ -3,7 +3,6 @@ from jinja2 import TemplateNotFound
 from flask import Blueprint
 from core import app, oid
 from modules.user.models import User
-
 import json
 from datetime import datetime
 
@@ -26,13 +25,21 @@ def login():
 		app.logger.error("template user/login.html not found")
 		abort(404)
 
+@bp_user.route("/logout")
+def logout():
+	"""
+	Logout and clear cookies
+	"""
+	session.clear()
+	return redirect(url_for("bp_word.home"))
+
 @oid.after_login
 def create_or_login(resp):
 	session['openid'] = resp.identity_url
 
 	user_model = User()
-	user = user_model.find({'email' : resp.email})
-	if user is not None:
+	user = user_model.find({'email' : resp.email})[0]
+	if user is None:
 		user_data = structure = {
 			"nick" : resp.nickname or resp.fullname,
 			"fullname" : resp.fullname,
@@ -49,13 +56,14 @@ def create_or_login(resp):
 			"timezone" : resp.timezone
 		}
 		user_data["_id"] = user_model.insert(user_data)
-		g.user = user
-		return redirect(oid.get_next_url())	   
-	g.user = user
-	return redirect(url_for("bp_word.home"))
-
-@bp_user.route("/profile", methods=["GET"])
-def user_profile():
-	return json.dumps(request.args)
+		session["userid"] = str(user_data["_id"])
+		app.logger.log(json.dumps(session))
+	else:
+		user_model.update({"_id" : user["_id"]}, {"$push" : {"logins" : {
+			"ip" : request.remote_addr,
+			"date_loggedin" : datetime.utcnow().isoformat(),
+		}}})
+		session["userid"] = str(user["_id"]) 
+	return redirect(url_for("bp_word.home")) 
 
 app.register_blueprint(bp_user)

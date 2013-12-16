@@ -41,13 +41,13 @@ class MongoDB(DB):
 	def update(self, query, update, upsert =False, multi = False):
 		return self.db[self.__collection__].update(query, update, upsert, multi)
 
-	def findOne(self, query={}, columns=None, limit=0, skip=0, sort=[]):
+	def findOne(self, query={}, columns=None, limit=0, skip=0, sort="_id"):
 		projection = columns
 		if columns is not None:
 			projection = [{column:1} for column in columns]
 		return self.db[self.__collection__].findOne(query, projection).sort(sort).skip(skip).limit(limit)
 
-	def find(self, query={}, columns=None, limit=0, skip=0, sort=[]):
+	def find(self, query={}, columns=None, limit=0, skip=0, sort="_id"):
 		projection = columns
 		if columns is not None:
 			projection = [{column:1} for column in columns]

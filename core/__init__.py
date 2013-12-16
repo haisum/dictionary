@@ -2,6 +2,8 @@ import os, base64, pymongo
 from flask import Flask, g, request, session
 from flask_openid import OpenID
 from flask.ext.babel import Babel
+from datetime import timedelta
+from bson.objectid import ObjectId
 """
 Naming default templates folder to layouts because it will contain base templates and layouts,
 real content will be inside <module_name>/templates folder which will extend templates in layouts folder
@@ -38,16 +40,30 @@ Value in this cookie will be used as temporary userid in words, descriptions, vi
 """
 @app.before_request
 def create_temp_userid_cookie():
+	session.permanent = True
+	app.permanent_session_lifetime = timedelta(days=31)
 	if 'openid' not in session:
 		if request.cookies.get("tempuid") is None:
 			g.user = {"_id" : os.urandom(4)}
 		else:
 			g.user = {"_id" : request.cookies.get("tempuid")}
+	else:
+		from modules.user.models import User
+		user = User()
+		record = user.find({"_id" : ObjectId(session["userid"])})[0]
+		g.user = dict(record)
+		g.user["_id"] = str(g.user["_id"])
 
 @app.after_request
 def create_temp_userid_cookie_response(response):
 	if 'openid' not in session and hasattr(g, "user"):
 		response.set_cookie("tempuid", g.user["_id"], max_age = 365*24*60*60)
+	else:
+		from modules.user.models import User
+		user = User()
+		record = user.find({"_id" : ObjectId(session["userid"])})[0]
+		g.user = dict(record)
+		g.user["_id"] = str(g.user["_id"])
 	return response
 
 """

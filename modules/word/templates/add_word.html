@@ -1,4 +1,4 @@
-{% extends "fullpage.html" %}
+{% extends "base.html" %}
 {% block custom_styles %}
 	{% if request.form.get("language", "english") != "english" %} 
 	<style>
@@ -11,6 +11,14 @@
 	</style>
 	{% endif %}
 {% endblock %}
+
+{% block side_menu %}
+{% endblock %}
+
+{% block sub_menu %}
+{% endblock %}
+
+{% block content_container_class %}col-lg-12{% endblock %}
 
 {% block content %}
 <form role="form" method="post">

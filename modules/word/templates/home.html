@@ -9,9 +9,9 @@
 		    <h3 class="panel-title">
 		    	<a href="#">{{word["phrase"]}} {%if word["local"] %}({{word["local"]}}) {% endif %} </a>
 			    <span class="vote">
-			    	<a href="#"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+			    	<a href="#"><span class="glyphicon glyphicon-arrow-up"></span></a>
 			    	&nbsp;{{word["likes_count"]}}&nbsp;
-			    	<a href="#"><span class="glyphicon glyphicon-thumbs-down"></span></a>
+			    	<a href="#"><span class="glyphicon glyphicon-arrow-down"></span></a>
 			    	&nbsp;{{word["dislikes_count"]}}
 			    </span>
 		    </h3>
@@ -30,22 +30,24 @@
 		</div>
 	</div>
 	{% endfor %}
-	{% if not words or words.count() == 0 and "alphabet" in  url_args(request.path) %}
-	<div class="col-lg-12 clear">
-		<div class="jumbotron">
-		  <h1>{{_("Hey, there!")}}</h1>
-		  <p>{{_("Nobody has defined a word in this category yet. Become the first one to define a slang starting with \"%(alphabet)s\".", alphabet=url_args(request.path)["alphabet"].upper())}}</p>
-		  <p><a class="btn btn-primary btn-lg" role="button" href="{{url_for("bp_word.add_word")}}">{{_("Define Now")}}</a></p>
+	{% if not words or words.count() == 0 %}
+		{% if "alphabet" in  url_args(request.path) %}
+		<div class="col-lg-12 clear">
+			<div class="jumbotron">
+			  <h1>{{_("Hey, there!")}}</h1>
+			  <p>{{_("Nobody has defined a word in this category yet. Become the first one to define a slang starting with \"%(alphabet)s\".", alphabet=url_args(request.path)["alphabet"].upper())}}</p>
+			  <p><a class="btn btn-primary btn-lg" role="button" href="{{url_for("bp_word.add_word")}}">{{_("Define Now")}}</a></p>
+			</div>
 		</div>
-	</div>
-	{% else %}
-	<div class="col-lg-12 clear">
-		<div class="jumbotron">
-		  <h1>{{_("Hey, there!")}}</h1>
-		  <p>{{_("Nobody has defined any word in this category yet. Become the first one to define a slang here.")}}</p>
-		  <p><a class="btn btn-primary btn-lg" role="button" href="{{url_for("bp_word.add_word")}}">{{_("Define Now")}}</a></p>
+		{% else %}
+		<div class="col-lg-12 clear">
+			<div class="jumbotron">
+			  <h1>{{_("Hey, there!")}}</h1>
+			  <p>{{_("Nobody has defined any word in this category yet. Become the first one to define a slang here.")}}</p>
+			  <p><a class="btn btn-primary btn-lg" role="button" href="{{url_for("bp_word.add_word")}}">{{_("Define Now")}}</a></p>
+			</div>
 		</div>
-	</div>
+		{% endif %}
 	{% endif %}
 
 </div>
